@@ -4,19 +4,18 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
+//var routes = require('./routes');
 var user = require('./routes/user');
+var stream_file = require('./routes/stream_file');
 var http = require('http');
 var path = require('path');
-var stream_file = require('./routes/stream_file');
-var fs = require('fs');
 
 var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -29,14 +28,11 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-//app.get('/', routes.index);
-//app.get('/users', user.list);
 app.get('/', function(req, res) {
-   //res.writeHead('Content-Type', 'text/html');
-   res.render('AsciiVideo');
+  res.render('AsciiVideo');
 });
 app.post('/requestVideo', stream_file.request_video);
-app.get('/streamFile/:id', stream_file.stream_file);
+app.post('/streamFile/:id', stream_file.stream_file);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

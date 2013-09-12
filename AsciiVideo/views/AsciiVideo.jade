@@ -1,0 +1,24 @@
+doctype 5
+html
+  head
+    link(href="../stylesheets/style.css", type="text/css", rel="stylesheet")
+    title
+  body
+    label(for="txt-src") Enter video source:
+    input(name="videoSource", type="text", id="txt-src")
+    button(id="btn-play-remote-video") Submit
+    div
+      canvas(id="c2", width="845", height="450")
+    div(id="controls")
+      button(id="btn-play") Play
+      button(id="btn-pause") Pause
+      button(id="btn-camera-record") Webcam
+      button(id="btn-take-photo") Take a photo
+    div
+      select(id="color")
+        option(value="True", selected="selected") True color
+        option(value="Green") Greenscale (The Matrix effect)
+        option(value="Gray") Grayscale
+        option(value="BlackAndWhite") Black and White
+    script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+    script(src="../javascripts/asciiVideo.js")
