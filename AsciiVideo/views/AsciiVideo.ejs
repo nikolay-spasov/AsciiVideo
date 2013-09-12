@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style>
+		canvas {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+    <label for="txt-src">Enter video source:</label>
+    <input name="videoSource" type="text" id="txt-src" />
+    <button id="btn-play-remote-video">Submit</button>
+    <div>
+	    <canvas id="c2" width="845" height="450"></canvas>
+    </div>
+	<div id="controls">
+		<button id="btn-play">Play</button>
+        <button id="btn-pause">Pause</button>
+        <button id="btn-camera-record">Webcam</button>
+        <button id="btn-take-photo">Take a photo</button>
+	</div>
+    <div>
+        <select id="color">
+            <option value="True" selected="selected">True color</option>
+            <option value="Green">Greenscale (The Matrix effect)</option>
+            <option value="Gray">Grayscale</option>
+            <option value="BlackAndWhite">Black and White</option>
+        </select>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="../Scripts/asciiVideo.js"></script>
+</body>
+</html>
