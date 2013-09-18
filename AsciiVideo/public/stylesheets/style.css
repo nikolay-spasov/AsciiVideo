@@ -10,3 +10,8 @@ a {
 #c2 {
   border: 1px solid black;
 }
+
+#show-fps {
+  margin-left: 5px;
+  font-weight: bold;
+}
