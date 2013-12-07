@@ -2,15 +2,15 @@
     'use strict';
     
     var video
-      , characters = "*?&AXRSabcdefghijklnopqrstuvwxyz1234567890".split("")
+      , characters = /*"*?&AXRSabcdefghijklnopqrstuvwxyz1234567890".split("")*/ "(){}[]/\XS\$_-0~#@|><+%&".split("")
       , ctx1
       , ctx2
       , offScreenCanvas
       , offScreenCtx
       , renderer = offscreenRendering
       , colorFunc = getColor
-      , canvasWidth = 120
-      , canvasHeight = 90
+      , canvasWidth = 80
+      , canvasHeight = 60
       , brightness
       , showFps;
 
@@ -24,11 +24,11 @@
         ctx2.fillStyle = "#000";
 
         offScreenCanvas = document.createElement('canvas');
-        offScreenCanvas.width = 840;
-        offScreenCanvas.height = 442;
+        offScreenCanvas.width = 800; // 840
+        offScreenCanvas.height = 420; // 442
         offScreenCtx = offScreenCanvas.getContext('2d');
-        offScreenCtx.font = "10px Verdana";
-        offScreenCtx.baseline = 'top';
+        offScreenCtx.font = "bold 12px Verdana";
+        offScreenCtx.textBaseline = "top";
         
         var selectColorScale = document.getElementById('color');
         selectColorScale.addEventListener('change', function (evt) {
@@ -123,7 +123,7 @@
           
         ctx1.drawImage(video, 0, 0, canvasWidth, canvasHeight);
         imageData = ctx1.getImageData(0, 0, canvasWidth, canvasHeight);
-        ctx2.fillRect(0, 0, 840, 442);
+        
         offScreenCtx.clearRect(0, 0, offScreenCanvas.width, offScreenCanvas.height);
         
         for (y = 0; y < canvasHeight; y += 2) {
@@ -133,13 +133,16 @@
                 color = getColorAtOffset(imageData.data, offset);
                 colorsSum = color.red + color.green + color.blue;
                 avg = Math.round(colorsSum / 3);
+                //avg = (((colorsSum / 3) + 0.5) << 1) >> 1;
+                //avg = colorsSum / 3 + 0.5;
                 
                 character = getCharacter(getBrightness(color.red, color.green, color.blue));
                 
                 offScreenCtx.fillStyle = colorFunc(color.red, color.green, color.blue, avg);
-                offScreenCtx.fillText(character, x * 7, y * 5);
+                offScreenCtx.fillText(character, x * 10, y * 7); // 7 5
             }
         }
+        ctx2.fillRect(0, 0, 800, 420);
         ctx2.drawImage(offScreenCanvas, 0, 0);
     }
 
@@ -160,7 +163,7 @@
     }
 
     function getColor(r, g, b, avg) {
-        return "rgb(" + r + ", " + g + ", " + b + ")";
+        return "rgb(" + r.toFixed(0) + ", " + g.toFixed(0) + ", " + b.toFixed(0) + ")";
     }
 
     function whiteColor(r, g, b) {
