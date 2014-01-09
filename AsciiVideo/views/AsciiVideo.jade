@@ -17,10 +17,15 @@ html
     div
       select(id="color")
         option(value="True", selected="selected") True color
-        option(value="Green") Greenscale (The Matrix effect)
+        option(value="Green") Greenscale
         option(value="Gray") Grayscale
         option(value="BlackAndWhite") Black and White
       span FPS
         span(id="show-fps") 0
+    div
+      select(id="performance")
+        option(value="Performance", selected="selected") Performance
+        option(value="Details") Details
+    div(id="pictures")
     script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
     script(src="../javascripts/asciiVideo.js")

@@ -2,24 +2,27 @@
     'use strict';
     
     var video
-      , characters = /*"*?&AXRSabcdefghijklnopqrstuvwxyz1234567890".split("")*/ "(){}[]/\XS\$_-0~#@|><+%&".split("")
+      , characters = "()[]/\\XS$_Z-0~#@|><+%&".split("")
       , ctx1
       , ctx2
       , offScreenCanvas
       , offScreenCtx
-      , renderer = offscreenRendering
       , colorFunc = getColor
-      , canvasWidth = 80
-      , canvasHeight = 60
+      , videoCanvas
       , brightness
-      , showFps;
+      , showFps
+      , charWidth = 10
+      , charHeight = 7;
 
     navigator.getUserMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
     window.onload = function () {
         video = document.createElement('video');
-        ctx1 = document.createElement('canvas').getContext('2d');
+        videoCanvas = document.createElement('canvas');
+        videoCanvas.width = 80;
+        videoCanvas.height = 60;
+        ctx1 = videoCanvas.getContext('2d');
         ctx2 = document.getElementById('c2').getContext('2d');
         ctx2.fillStyle = "#000";
 
@@ -48,6 +51,24 @@
                     break;
                 default:
                     return;
+            }
+        }, false);
+        
+        var selectPerformance = document.getElementById('performance');
+        selectPerformance.addEventListener('change', function (evt) {
+            var opt = selectPerformance.options[selectPerformance.selectedIndex].value;
+            if (opt === 'Details') {
+                offScreenCtx.font = "bold 8px Verdana";
+                charWidth = 7;
+                charHeight = 5;
+                videoCanvas.width = 120;
+                videoCanvas.height = 90;
+            } else {
+                offScreenCtx.font = "bold 12px Verdana";
+                charWidth = 10;
+                charHeight = 7;
+                videoCanvas.width = 80;
+                videoCanvas.height = 60;
             }
         }, false);
 
@@ -82,12 +103,20 @@
         }, false);
 
         document.getElementById('btn-take-photo').addEventListener('click', function () {
-            var downloadLink = document.getElementById('downloadLink') || document.createElement('a');
-            downloadLink.innerHTML = "Download Photo";
+            var dataUrl = c2.toDataURL();
+            var downloadLink = document.createElement('a');
             downloadLink.setAttribute('id', 'downloadLink');
-            downloadLink.setAttribute('href', c2.toDataURL());
+            downloadLink.setAttribute('href', dataUrl);
             downloadLink.setAttribute('download', "myImage.png");
-            document.getElementById('controls').appendChild(downloadLink);
+            
+            var img = document.createElement('img');
+            img.className = 'pic';
+            img.src = dataUrl;
+            img.width = 120;
+            img.height = 63;
+            downloadLink.appendChild(img);
+            
+            document.getElementById('pictures').appendChild(downloadLink);
         }, false);
         
         document.getElementById('btn-play-remote-video').addEventListener('click', function() {
@@ -103,7 +132,7 @@
         if (video.paused || video.ended) return;
         
         var start = new Date();
-        renderer();
+        render();
         var end = new Date() - start;
         showFps.innerHTML = (1000 / end).toFixed(2);
         
@@ -112,7 +141,7 @@
         }, 0);
     }
 
-    function offscreenRendering() {
+    function render() {
         var colorsSum
           , character
           , avg
@@ -121,25 +150,23 @@
           , color
           , x, y;
           
-        ctx1.drawImage(video, 0, 0, canvasWidth, canvasHeight);
-        imageData = ctx1.getImageData(0, 0, canvasWidth, canvasHeight);
+        ctx1.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+        imageData = ctx1.getImageData(0, 0, videoCanvas.width, videoCanvas.height);
         
         offScreenCtx.clearRect(0, 0, offScreenCanvas.width, offScreenCanvas.height);
         
-        for (y = 0; y < canvasHeight; y += 2) {
-            for (x = 0; x < canvasWidth; x++) {
-                offset = (y * canvasWidth + x) * 4;
+        for (y = 0; y < videoCanvas.height; y += 2) {
+            for (x = 0; x < videoCanvas.width; x++) {
+                offset = (y * videoCanvas.width + x) * 4;
                 
                 color = getColorAtOffset(imageData.data, offset);
                 colorsSum = color.red + color.green + color.blue;
                 avg = Math.round(colorsSum / 3);
-                //avg = (((colorsSum / 3) + 0.5) << 1) >> 1;
-                //avg = colorsSum / 3 + 0.5;
                 
                 character = getCharacter(getBrightness(color.red, color.green, color.blue));
                 
                 offScreenCtx.fillStyle = colorFunc(color.red, color.green, color.blue, avg);
-                offScreenCtx.fillText(character, x * 10, y * 7); // 7 5
+                offScreenCtx.fillText(character, x * charWidth, y * charHeight); // 7 5
             }
         }
         ctx2.fillRect(0, 0, 800, 420);
@@ -174,8 +201,7 @@
         return {
             red: data[offset],
             green: data[offset + 1],
-            blue: data[offset + 2],
-            alpha: data[offset + 3]
+            blue: data[offset + 2]
         };
     }
 }());

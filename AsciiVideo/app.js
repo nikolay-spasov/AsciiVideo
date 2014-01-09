@@ -33,7 +33,8 @@ app.get('/', function(req, res) {
   res.render('AsciiVideo');
 });
 app.get('/defragUndead', function (req, res) {
-  res.sendfile('/media/defragUndead.webm', { root: './public'});
+  var src = "https://www.dropbox.com/s/ecffulwunm4rxvn/defragUndead.mp4?dl=1";
+  request.get(src).pipe(res);
 });
 app.get('/streamfile/:src', function (req, res) {
   var src = unescape(req.params.src);
