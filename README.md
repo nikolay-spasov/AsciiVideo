@@ -3,6 +3,8 @@ AsciiVideo
 
 http://morning-waters-2699.herokuapp.com
 
+For demo just press "play" or "webcam".
+
 ###Playing external sources
 You can play every source that is suitable for html5 video tag.
 
