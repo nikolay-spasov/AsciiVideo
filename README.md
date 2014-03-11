@@ -18,6 +18,6 @@ You can play every source that is suitable for html5 video tag.
     
 copy that and paste it in the textbox next to "Play this" button.
 
-Note: You can't play sources starting with "blob:" and if you're using Chrome you'll get "blob:" in this case get the source with firefox (if you manage to hack the "blob:" source, please let me know gou you did it).
+Note: You can't play sources starting with "blob:" and if you're using Chrome you'll get "blob:" in this case get the source with firefox (if you manage to hack the "blob:" source, please let me know how you did it).
 
 Note2: These video sources will eventually expire, so you can't just save them and play them again tomorrow!
