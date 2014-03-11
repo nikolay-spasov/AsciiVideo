@@ -5,7 +5,7 @@ http://morning-waters-2699.herokuapp.com
 
 For demo just press "play" or "webcam".
 
-###Playing external sources
+###Playing external video sources
 You can play every source that is suitable for html5 video tag.
 
 ###How to play YouTube video in the AsciiVideo player?
